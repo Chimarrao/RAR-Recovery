@@ -1,5 +1,5 @@
 def gerador(listaSenhas, caracteres, tamanho):
-    #Recebe o tamanho maximo da senha
+    #Chave recebe o tamanho maximo da senha
     chave = []
     for i in range(0, tamanho):
         chave.append(0)

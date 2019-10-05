@@ -364,7 +364,6 @@ class Ui_janela(object):
         self.retranslateUi(janela)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(janela)
-
     #----------------------------------------------Código adicionado manualmente-----------------------------------------------#
         #imports
         import funcoes
@@ -372,7 +371,7 @@ class Ui_janela(object):
         import packs
         from functools import partial
 
-        #Variáveis
+        #Threads
         self.threads = []
 
         #Desabilita tabs
@@ -386,23 +385,15 @@ class Ui_janela(object):
         def sinalIniciar(comando, valor):
             if comando == "apagar":
                 self.textEditConsole.clear()
-            if comando == "atualizarBarra":
-                numCaracteres = packs.retornaNumeroCaracteres(self.checkBoxTodos, self.checkBoxLetrasMaiusculas, 
-                    self.checkBoxLetrasMinusculas, self.checkBoxLetrasAcentuadas, self.checkBoxNumeros, self.checkBoxSimbolos, 
-                    self.checkBoxEspaco)
 
-                #Pega a máxima combinação possível
-                combPossiveis = 0
-                for tamanho in range(self.spinBoxLimiteMinimo.value(), self.spinBoxLimiteMaximo.value()+1):
-                    combPossiveis = combPossiveis + (numCaracteres ** tamanho)
-                
-                parte = combPossiveis/100
-                percentual = int(valor/parte)
-                self.progressBarProgressoGeral.setValue(percentual)
+            if comando == "atualizarBarra":
+                self.progressBarProgressoGeral.setValue(valor)
+
             if comando == "bloquear":
                 self.menubar.setEnabled(False)
                 self.tabWidget.setEnabled(False)
                 self.pushButtonIniciar.setEnabled(False)
+
             if comando == "liberar":
                 self.menubar.setEnabled(True)
                 self.tabWidget.setEnabled(True)
@@ -410,17 +401,18 @@ class Ui_janela(object):
 
         #Funções para botões
         def iniciar():
-            caracteres = []
-            #Pega os limites
-            LimiteMinimo = self.spinBoxLimiteMinimo.value()
-            LimiteMaximo = self.spinBoxLimiteMaximo.value()
+            caracteres                      = []
+            LimiteMinimo                    = self.spinBoxLimiteMinimo.value()
+            LimiteMaximo                    = self.spinBoxLimiteMaximo.value()
 
-            caracteres = packs.retornaCaracteres(caracteres, self.checkBoxTodos, self.checkBoxLetrasMaiusculas, 
-                self.checkBoxLetrasMinusculas, self.checkBoxLetrasAcentuadas, 
-                self.checkBoxNumeros, self.checkBoxSimbolos, self.checkBoxEspaco)
+            caracteres                      = packs.retornaCaracteres(caracteres, self.checkBoxTodos, 
+                                                self.checkBoxLetrasMaiusculas, self.checkBoxLetrasMinusculas, 
+                                                self.checkBoxLetrasAcentuadas, self.checkBoxNumeros, 
+                                                self.checkBoxSimbolos, self.checkBoxEspaco)
             
-            iniciar = funcoes.iniciar(self.pushButtonIniciar, self.progressBarProgressoGeral, self.tabWidget, 
-                self.textEditConsole, LimiteMinimo, LimiteMaximo, caracteres)
+            iniciar                         = funcoes.iniciar(self.pushButtonIniciar, self.progressBarProgressoGeral, 
+                                                self.tabWidget, self.textEditConsole, LimiteMinimo, LimiteMaximo, 
+                                                caracteres)
 
             iniciar.sinal.connect(sinalIniciar)
             self.threads.append(iniciar)
@@ -441,9 +433,9 @@ class Ui_janela(object):
         #Menu principal
         self.pushButtonIniciar.clicked.connect(iniciar)
         self.pushButtonParar.clicked.connect(parar)
+        #Barra de menu
         self.actionFechar.triggered.connect(sair)
     #--------------------------------------------------------------------------------------------------------------------------#
-    
     def retranslateUi(self, janela):
         _translate = QtCore.QCoreApplication.translate
         janela.setWindowTitle(_translate("janela", "RAR Recovery"))

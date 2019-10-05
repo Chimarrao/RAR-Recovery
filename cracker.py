@@ -4,36 +4,47 @@ import time
 
 rarfile.UNRAR_TOOL = "UnRAR.exe"
 
-def cracker(nomeArquivo, formatoArquivo, listaSenhas, inicio, fim, tentativas, textEditConsole, sinal, tempoInicio):
+def cracker(caminhoArquivo, formatoArquivo, listaSenhas, inicio, caracteres, fim, tentativas,textEditConsole,
+            sinal, tempoInicio, parte):
     if formatoArquivo == "zip":
-        arquivoZip = zipfile.ZipFile(nomeArquivo, "r")
+        arquivoZip = zipfile.ZipFile(caminhoArquivo, "r")
     elif formatoArquivo == "rar":
-        arquivoRar = rarfile.RarFile(nomeArquivo, "r")
-    
+        arquivoRar = rarfile.RarFile(caminhoArquivo, "r")
+
     for indice in range(inicio, len(listaSenhas)):
         tentativas += 1
-        
-        #Apaga o console
+
+        # Apaga o console
         if tentativas % 10 == 0:
             sinal.emit("apagar", 0)
-            
-        #Atualiza a barra de progresso
-        tempoAtual = time.time()
-        diferencaEmSegundos = time.time()-tempoInicio
+
+        # Atualiza a barra de progresso
+        percentual = 0
+        if int(tentativas/parte) > percentual:
+            percentual = int(tentativas/parte)
+            sinal.emit("atualizarBarra", percentual)
+
+        # Atualiza a velocidade do cracker
+        tempoAtual                          = time.time()
+        diferencaEmSegundos                 = time.time()-tempoInicio
+
         if diferencaEmSegundos < 1:
             senhasPSeg = 0
         else:
-            senhasPSeg = tentativas/ diferencaEmSegundos
+            senhasPSeg = tentativas/diferencaEmSegundos
 
-        textEditConsole.insertPlainText("Senha atual: {} - Velocidade média: {} senhas p/ seg\r".format(listaSenhas[indice], int(senhasPSeg)))
-        sinal.emit("atualizarBarra", tentativas)
+        textEditConsole.insertPlainText(
+            "Senha atual: {} - Velocidade média: {} senhas p/ seg\r".format(listaSenhas[indice], int(senhasPSeg)))
         try:
             if formatoArquivo == "zip":
-                arquivoZip.extractall(path = "./Arquivo extraídos", pwd = str.encode(listaSenhas[indice]))
+                arquivoZip.extractall(path="./Arquivo extraídos", pwd=str.encode(listaSenhas[indice]))
             elif formatoArquivo == "rar":
-                arquivoRar.extractall(path = "./Arquivo extraídos", pwd = listaSenhas[indice])
-            
-            textEditConsole.insertPlainText("---------------------------------------------Arquivo extraido------------------------------------------------\r")
+                arquivoRar.extractall(path="./Arquivo extraídos", pwd=listaSenhas[indice])
+
+            mensagem                        = "---------------------------------------------Arquivo extraido"
+            mensagem                        = mensagem + "------------------------------------------------"
+
+            textEditConsole.insertPlainText(mensagem)
             textEditConsole.insertPlainText("Senhas testadas: {}\r".format(tentativas))
             textEditConsole.insertPlainText("A senha é: {}\r".format(listaSenhas[indice]))
 
