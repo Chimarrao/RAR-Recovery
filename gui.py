@@ -37,20 +37,20 @@ class Ui_janela(object):
         self.pushButtonIniciar.setIconSize(QtCore.QSize(50, 50))
         self.pushButtonIniciar.setFlat(True)
         self.pushButtonIniciar.setObjectName("pushButtonIniciar")
-        self.pushButtonParar = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButtonParar.setEnabled(True)
-        self.pushButtonParar.setGeometry(QtCore.QRect(150, 10, 61, 61))
+        self.pushButtonPararForcaBruta = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButtonPararForcaBruta.setEnabled(True)
+        self.pushButtonPararForcaBruta.setGeometry(QtCore.QRect(150, 10, 61, 61))
         font = QtGui.QFont()
         font.setBold(False)
         font.setWeight(50)
-        self.pushButtonParar.setFont(font)
-        self.pushButtonParar.setText("")
+        self.pushButtonPararForcaBruta.setFont(font)
+        self.pushButtonPararForcaBruta.setText("")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("icones/Controles de midias/pare-quadrado-96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButtonParar.setIcon(icon2)
-        self.pushButtonParar.setIconSize(QtCore.QSize(50, 50))
-        self.pushButtonParar.setFlat(True)
-        self.pushButtonParar.setObjectName("pushButtonParar")
+        self.pushButtonPararForcaBruta.setIcon(icon2)
+        self.pushButtonPararForcaBruta.setIconSize(QtCore.QSize(50, 50))
+        self.pushButtonPararForcaBruta.setFlat(True)
+        self.pushButtonPararForcaBruta.setObjectName("pushButtonPararForcaBruta")
         self.pushButtonPausar = QtWidgets.QPushButton(self.centralwidget)
         self.pushButtonPausar.setEnabled(False)
         self.pushButtonPausar.setGeometry(QtCore.QRect(80, 10, 61, 61))
@@ -143,7 +143,7 @@ class Ui_janela(object):
         self.checkBoxNumeros.setGeometry(QtCore.QRect(10, 80, 171, 17))
         self.checkBoxNumeros.setObjectName("checkBoxNumeros")
         self.checkBoxSimbolos = QtWidgets.QCheckBox(self.groupBox)
-        self.checkBoxSimbolos.setEnabled(False)
+        self.checkBoxSimbolos.setEnabled(True)
         self.checkBoxSimbolos.setGeometry(QtCore.QRect(10, 100, 171, 17))
         self.checkBoxSimbolos.setObjectName("checkBoxSimbolos")
         self.checkBoxLetrasAcentuadas = QtWidgets.QCheckBox(self.groupBox)
@@ -284,7 +284,7 @@ class Ui_janela(object):
         self.labelNome.setObjectName("labelNome")
         self.tabWidget.raise_()
         self.pushButtonIniciar.raise_()
-        self.pushButtonParar.raise_()
+        self.pushButtonPararForcaBruta.raise_()
         self.pushButtonPausar.raise_()
         self.progressBarProgressoGeral.raise_()
         self.groupBox_5.raise_()
@@ -365,11 +365,11 @@ class Ui_janela(object):
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(janela)
     #----------------------------------------------Código adicionado manualmente-----------------------------------------------#
-        #imports
+        from PyQt5.QtWidgets import QMessageBox
+        from functools import partial
         import funcoes
         import run
         import packs
-        from functools import partial
 
         #Threads
         self.threads = []
@@ -387,7 +387,7 @@ class Ui_janela(object):
                 self.textEditConsole.clear()
 
             if comando == "atualizarBarra":
-                self.progressBarProgressoGeral.setValue(valor)
+                self.progressBarProgressoGeral.setValue(int(valor))
 
             if comando == "bloquear":
                 self.menubar.setEnabled(False)
@@ -398,6 +398,25 @@ class Ui_janela(object):
                 self.menubar.setEnabled(True)
                 self.tabWidget.setEnabled(True)
                 self.pushButtonIniciar.setEnabled(True)
+
+            if comando == "msginformacao":
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Information)
+                msgBox.setWindowTitle("Informação")
+                msgBox.setText(valor)
+                msgBox.setWindowIcon(QtGui.QIcon("./icones/Sobre/sobre-96.png"))
+                msgBox.exec_()
+
+            if comando == "msgerro":
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Critical)
+                msgBox.setWindowTitle("Erro !")
+                msgBox.setText(valor)
+                msgBox.setWindowIcon(QtGui.QIcon("./icones/Sistema operacional/excluir-96.png"))
+                msgBox.exec_()
+                
+            if comando == "msgatencao":
+                pass
 
         #Funções para botões
         def iniciar():
@@ -419,22 +438,22 @@ class Ui_janela(object):
             iniciar.start()
         
         #Percorre todas as threads e para elas
-        def parar():
+        def pararForcaBruta():
             if len(self.threads) > 0:
                 for t in self.threads:
                     t.stop()
                 self.threads.clear()
                 sinalIniciar("liberar", 0)
 
-        def sair():
+        def sairDoPrograma():
             janela.close()
 
         #Botões que dependem de funções
         #Menu principal
         self.pushButtonIniciar.clicked.connect(iniciar)
-        self.pushButtonParar.clicked.connect(parar)
+        self.pushButtonPararForcaBruta.clicked.connect(pararForcaBruta)
         #Barra de menu
-        self.actionFechar.triggered.connect(sair)
+        self.actionFechar.triggered.connect(sairDoPrograma)
     #--------------------------------------------------------------------------------------------------------------------------#
     def retranslateUi(self, janela):
         _translate = QtCore.QCoreApplication.translate
@@ -494,7 +513,7 @@ class Ui_janela(object):
         self.actionSalvar.setText(_translate("janela", "Salvar"))
         self.actionAjuda.setText(_translate("janela", "Ajuda"))
         self.actionSobre.setText(_translate("janela", "Sobre"))
-        self.actionFechar.setText(_translate("janela", "Sair"))
+        self.actionFechar.setText(_translate("janela", "SairDoPrograma"))
         self.actionThreads.setText(_translate("janela", "Threads"))
         self.actionPortugues.setText(_translate("janela", "Português"))
         self.actionIngles.setText(_translate("janela", "Inglês"))

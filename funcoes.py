@@ -1,9 +1,9 @@
+from PyQt5 import QtCore
 import os
 import geradorSenhas
 import cracker
 import easygui
 import time
-from PyQt5 import QtCore
 
 def abrir(labelNome, labelTamanho):
     try:
@@ -19,19 +19,19 @@ def abrir(labelNome, labelTamanho):
 
         #Coloca o tamanho do arquivo em bytes
         if os.path.getsize(caminhoArquivo) < 1024:
-            labelTamanho.setText(str(int(os.path.getsize(caminhoArquivo))) + " bytes")
+            labelTamanho.setText(str(os.path.getsize(caminhoArquivo)) + " bytes")
         #Coloca o tamanho do arquivo em Kb
         if os.path.getsize(caminhoArquivo) > 1024 and os.path.getsize(caminhoArquivo) < 1048576:
-            labelTamanho.setText(str(int(os.path.getsize(caminhoArquivo)/1024)) + " Kb")
+            labelTamanho.setText(str(os.path.getsize(caminhoArquivo)/1024) + " Kb")
         #Coloca o tamanho do arquivo em Mb
         if os.path.getsize(caminhoArquivo) > 1048576 and os.path.getsize(caminhoArquivo) < 1073741824:
-            labelTamanho.setText(str((int(os.path.getsize(caminhoArquivo)/1024)/1024)) + " Mb")
+            labelTamanho.setText(str((os.path.getsize(caminhoArquivo)/1024)/1024) + " Mb")
 
     except Exception as e:
         print("Erro ao abrir arquivo !", e)
 
 class iniciar(QtCore.QThread):
-    sinal = QtCore.pyqtSignal(object, int)
+    sinal = QtCore.pyqtSignal(object, str)
 
     def __init__(self, pushButtonIniciar, progressBarProgressoGeral, tabWidget, textEditConsole, LimiteMinimo, 
                  LimiteMaximo, caracteres):
@@ -46,7 +46,6 @@ class iniciar(QtCore.QThread):
 
     def run(self):
         try:
-            i                               = 0
             tentativas                      = 0
             listaSenhas                     = []
             combPossiveis                   = 0
@@ -59,10 +58,9 @@ class iniciar(QtCore.QThread):
             parte                           = combPossiveis/100
             senhafoiencontrada              = False
 
-            self.sinal.emit("bloquear", 0)
-            #Trocar para as variáveis da gui
+            self.sinal.emit("bloquear", "0")
             for i in range(self.LimiteMinimo, self.LimiteMaximo+1):
-                listaSenhas                 = geradorSenhas.gerador(listaSenhas, self.caracteres, i)
+                listaSenhas = geradorSenhas.gerador(listaSenhas, self.caracteres, i)
                 
                 for listaSenhas in listaSenhas:
                     tentativas              += 1
@@ -74,15 +72,15 @@ class iniciar(QtCore.QThread):
                     i = fim
 
                     if senhafoiencontrada:
-                        self.sinal.emit("liberar", 0)
+                        self.sinal.emit("liberar", "0")
                         return
                     
             if not senhafoiencontrada:
-                self.sinal.emit("liberar", 0)
-                self.textEditConsole.insertPlainText("-----------------------------Senha não encontrada, tente outra configuração-----------------------------")
+                self.sinal.emit("msginformacao", "A senha não foi encontrada, tente outra configuração")
+                self.sinal.emit("liberar", "0")
 
         except Exception as e:
-            print("Erro !", e)
+            self.sinal.emit("msgerro", str(e))
 
     def stop(self):
         self.terminate()

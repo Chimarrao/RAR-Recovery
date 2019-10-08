@@ -6,7 +6,7 @@ numeros = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 acentuadas = ["á", "é", "í", "ó", "ú", "ç", "ã", "õ", "à", "Á", "É", "Í", "Ó", "Ú", "Ç", "Ã", "Õ", "À"]
 
-#simbolos = ["", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "=", "_", "+", "[", "]", "{", "}", "\", "|", ";", """, "'", ",", ".", "<", ">", "/", "?"]
+simbolos = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "=", "_", "+", "[", "]", "{", "}", R"\", """, "'", ",", ".", "<", ">", "/", "?"]
 
 espaco = [" "]
 
@@ -17,7 +17,7 @@ def retornaCaracteres(caracteres, checkBoxTodos, checkBoxLetrasMaiusculas, check
         caracteres.extend(minusculas)
         caracteres.extend(acentuadas)
         caracteres.extend(numeros)
-        #caracteres.extend(simbolos)
+        caracteres.extend(simbolos)
         caracteres.extend(espaco)
     else:
         if checkBoxLetrasMaiusculas.isChecked():
@@ -33,7 +33,7 @@ def retornaCaracteres(caracteres, checkBoxTodos, checkBoxLetrasMaiusculas, check
             caracteres.extend(numeros)
 
         if checkBoxSimbolos.isChecked():
-            #caracteres.extend(simbolos)
+            caracteres.extend(simbolos)
             pass
 
         if checkBoxEspaco.isChecked():
@@ -49,7 +49,7 @@ def retornaNumeroCaracteres(checkBoxTodos, checkBoxLetrasMaiusculas, checkBoxLet
         contador = contador + 26
         contador = contador + 18
         contador = contador + 10
-        #Adicionar símbolos
+        contador = contador + 27
         contador = contador + 10
     else:
         if checkBoxLetrasMaiusculas.isChecked():
@@ -65,8 +65,7 @@ def retornaNumeroCaracteres(checkBoxTodos, checkBoxLetrasMaiusculas, checkBoxLet
             contador = contador + 10
 
         if checkBoxSimbolos.isChecked():
-            #Adicionar símbolos
-            pass
+            contador = contador + 27
 
         if checkBoxEspaco.isChecked():
             contador = contador + 1
