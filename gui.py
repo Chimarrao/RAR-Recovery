@@ -9,7 +9,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 class Ui_janela(object):
     def setupUi(self, janela):
         janela.setObjectName("janela")
@@ -373,13 +372,11 @@ class Ui_janela(object):
 
         #Threads
         self.threads = []
+        self.abrir = funcoes.abrir(self.labelNome, self.labelTamanho)
 
         #Desabilita tabs
         self.tab_3.setEnabled(False)
         self.tab_2.setEnabled(False)
-
-        #Menu arquivo
-        self.actionAbrir.triggered.connect(partial(funcoes.abrir, self.labelNome, self.labelTamanho))
 
         #Recebimento de sinal do iniciar
         def sinalIniciar(comando, valor):
@@ -429,7 +426,7 @@ class Ui_janela(object):
                                                 self.checkBoxLetrasAcentuadas, self.checkBoxNumeros, 
                                                 self.checkBoxSimbolos, self.checkBoxEspaco)
             
-            iniciar                         = funcoes.iniciar(self.pushButtonIniciar, self.progressBarProgressoGeral, 
+            iniciar                         = funcoes.iniciar(self.abrir, self.pushButtonIniciar, self.progressBarProgressoGeral, 
                                                 self.tabWidget, self.textEditConsole, LimiteMinimo, LimiteMaximo, 
                                                 caracteres)
 
@@ -440,20 +437,46 @@ class Ui_janela(object):
         #Percorre todas as threads e para elas
         def pararForcaBruta():
             if len(self.threads) > 0:
-                for t in self.threads:
-                    t.stop()
+                for thread in self.threads:
+                    thread.stop()
                 self.threads.clear()
                 sinalIniciar("liberar", 0)
 
         def sairDoPrograma():
             janela.close()
 
-        #Botões que dependem de funções
+        def todosCaracteres():
+            if self.checkBoxTodos.isChecked():
+                self.checkBoxLetrasMaiusculas.setEnabled(False)
+                self.checkBoxLetrasMinusculas.setEnabled(False)
+                self.checkBoxLetrasAcentuadas.setEnabled(False)
+                self.checkBoxNumeros.setEnabled(False)
+                self.checkBoxSimbolos.setEnabled(False)
+                self.checkBoxEspaco.setEnabled(False)
+
+            if not self.checkBoxTodos.isChecked():
+                self.checkBoxLetrasMaiusculas.setEnabled(True)
+                self.checkBoxLetrasMinusculas.setEnabled(True)
+                self.checkBoxLetrasAcentuadas.setEnabled(True)
+                self.checkBoxNumeros.setEnabled(True)
+                self.checkBoxSimbolos.setEnabled(True)
+                self.checkBoxEspaco.setEnabled(True)
+
+        def abrir():
+            self.abrir.run()
+
         #Menu principal
         self.pushButtonIniciar.clicked.connect(iniciar)
         self.pushButtonPararForcaBruta.clicked.connect(pararForcaBruta)
+        
+        #Menu arquivo
+        self.actionAbrir.triggered.connect(abrir)
+        
         #Barra de menu
         self.actionFechar.triggered.connect(sairDoPrograma)
+
+        #Outras funções
+        self.checkBoxTodos.clicked.connect(todosCaracteres)
     #--------------------------------------------------------------------------------------------------------------------------#
     def retranslateUi(self, janela):
         _translate = QtCore.QCoreApplication.translate

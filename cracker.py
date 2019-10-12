@@ -36,10 +36,10 @@ def cracker(caminhoArquivo, formatoArquivo, listaSenhas, inicio, caracteres, fim
             listaSenhas[indice], int(senhasPSeg)))
         try:
             if formatoArquivo == "zip":
-                arquivoZip.extractall(path="./Arquivo extraídos", pwd=str.encode(listaSenhas[indice]))
+                arquivoZip.extractall(path="./Arquivo extraídos", pwd = str.encode(listaSenhas[indice]))
             elif formatoArquivo == "rar":
                 arquivoRar.extractall(path="./Arquivo extraídos", pwd=listaSenhas[indice])
-                
+
             sinal.emit("msginformacao", "Arquivo extraído ! \nSenhas testadas: {} \nSenha do arquivo: {}".format(
                 tentativas, listaSenhas[indice]))
             return True
