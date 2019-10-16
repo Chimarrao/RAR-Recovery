@@ -4,13 +4,7 @@ import time
 
 rarfile.UNRAR_TOOL = "UnRAR.exe"
 
-def cracker(caminhoArquivo, formatoArquivo, listaSenhas, inicio, caracteres, fim, tentativas,textEditConsole,
-            sinal, tempoInicio, parte):
-    if formatoArquivo == "zip":
-        arquivoZip = zipfile.ZipFile(caminhoArquivo, "r")
-    elif formatoArquivo == "rar":
-        arquivoRar = rarfile.RarFile(caminhoArquivo, "r")
-
+def cracker(arquivo, formatoArquivo, listaSenhas, inicio, tentativas, sinal, tempoInicio, parte):
     for indice in range(inicio, len(listaSenhas)):
         tentativas += 1
 
@@ -19,26 +13,25 @@ def cracker(caminhoArquivo, formatoArquivo, listaSenhas, inicio, caracteres, fim
             sinal.emit("apagar", "0")
 
         #Atualiza a barra de progresso
-        percentual = 0
+        percentual = -1
         if int(tentativas/parte) > percentual:
             percentual = int(tentativas/parte)
             sinal.emit("atualizarBarra", str(percentual))
 
         #Atualiza a velocidade do cracker
         diferencaEmSegundos                 = time.time()-tempoInicio
-
         if diferencaEmSegundos < 1:
-            senhasPSeg = 0
+            velocidade = 0
         else:
-            senhasPSeg = tentativas/diferencaEmSegundos
+            velocidade = tentativas/diferencaEmSegundos
 
-        textEditConsole.insertPlainText("Senha atual: {} - Velocidade média: {} senhas p/ seg\r".format(
-            listaSenhas[indice], int(senhasPSeg)))
+        sinal.emit("console", "Senha atual: {} - Velocidade média: {} senhas p/ seg\r".format(
+                    listaSenhas[indice], int(velocidade)))
         try:
             if formatoArquivo == "zip":
-                arquivoZip.extractall(path="./Arquivo extraídos", pwd = str.encode(listaSenhas[indice]))
+                arquivo.extractall(path="./Arquivo extraídos", pwd = str.encode(listaSenhas[indice]))
             elif formatoArquivo == "rar":
-                arquivoRar.extractall(path="./Arquivo extraídos", pwd=listaSenhas[indice])
+                arquivo.extractall(path="./Arquivo extraídos", pwd = listaSenhas[indice])
 
             sinal.emit("msginformacao", "Arquivo extraído ! \nSenhas testadas: {} \nSenha do arquivo: {}".format(
                 tentativas, listaSenhas[indice]))

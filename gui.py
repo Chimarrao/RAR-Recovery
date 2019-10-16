@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\gui.ui'
+# Form implementation generated from reading ui file 'gui.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.1
 #
@@ -8,6 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_janela(object):
     def setupUi(self, janela):
@@ -36,20 +37,20 @@ class Ui_janela(object):
         self.pushButtonIniciar.setIconSize(QtCore.QSize(50, 50))
         self.pushButtonIniciar.setFlat(True)
         self.pushButtonIniciar.setObjectName("pushButtonIniciar")
-        self.pushButtonPararForcaBruta = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButtonPararForcaBruta.setEnabled(True)
-        self.pushButtonPararForcaBruta.setGeometry(QtCore.QRect(150, 10, 61, 61))
+        self.pushButtonParar = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButtonParar.setEnabled(True)
+        self.pushButtonParar.setGeometry(QtCore.QRect(150, 10, 61, 61))
         font = QtGui.QFont()
         font.setBold(False)
         font.setWeight(50)
-        self.pushButtonPararForcaBruta.setFont(font)
-        self.pushButtonPararForcaBruta.setText("")
+        self.pushButtonParar.setFont(font)
+        self.pushButtonParar.setText("")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("icones/Controles de midias/pare-quadrado-96.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButtonPararForcaBruta.setIcon(icon2)
-        self.pushButtonPararForcaBruta.setIconSize(QtCore.QSize(50, 50))
-        self.pushButtonPararForcaBruta.setFlat(True)
-        self.pushButtonPararForcaBruta.setObjectName("pushButtonPararForcaBruta")
+        self.pushButtonParar.setIcon(icon2)
+        self.pushButtonParar.setIconSize(QtCore.QSize(50, 50))
+        self.pushButtonParar.setFlat(True)
+        self.pushButtonParar.setObjectName("pushButtonParar")
         self.pushButtonPausar = QtWidgets.QPushButton(self.centralwidget)
         self.pushButtonPausar.setEnabled(False)
         self.pushButtonPausar.setGeometry(QtCore.QRect(80, 10, 61, 61))
@@ -274,16 +275,18 @@ class Ui_janela(object):
         self.label_8.setObjectName("label_8")
         self.labelTamanho = QtWidgets.QLabel(self.groupBox_4)
         self.labelTamanho.setGeometry(QtCore.QRect(210, 20, 71, 16))
+        self.labelTamanho.setText("")
         self.labelTamanho.setObjectName("labelTamanho")
         self.label_11 = QtWidgets.QLabel(self.groupBox_4)
         self.label_11.setGeometry(QtCore.QRect(10, 20, 31, 16))
         self.label_11.setObjectName("label_11")
         self.labelNome = QtWidgets.QLabel(self.groupBox_4)
         self.labelNome.setGeometry(QtCore.QRect(50, 20, 91, 16))
+        self.labelNome.setText("")
         self.labelNome.setObjectName("labelNome")
         self.tabWidget.raise_()
         self.pushButtonIniciar.raise_()
-        self.pushButtonPararForcaBruta.raise_()
+        self.pushButtonParar.raise_()
         self.pushButtonPausar.raise_()
         self.progressBarProgressoGeral.raise_()
         self.groupBox_5.raise_()
@@ -364,15 +367,16 @@ class Ui_janela(object):
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(janela)
     #----------------------------------------------Código adicionado manualmente-----------------------------------------------#
-        from PyQt5.QtWidgets import QMessageBox
-        from functools import partial
-        import funcoes
         import run
         import packs
+        import abrirArquivo
+        import iniciarPrograma
+        from functools import partial
+        from PyQt5.QtWidgets import QMessageBox
 
         #Threads
         self.threads = []
-        self.abrir = funcoes.abrir(self.labelNome, self.labelTamanho)
+        self.abrir = abrirArquivo.abrir(self.labelNome, self.labelTamanho)
 
         #Desabilita tabs
         self.tab_3.setEnabled(False)
@@ -415,6 +419,9 @@ class Ui_janela(object):
             if comando == "msgatencao":
                 pass
 
+            if comando == "console":
+                self.textEditConsole.insertPlainText(valor)
+
         #Funções para botões
         def iniciar():
             caracteres                      = []
@@ -426,9 +433,9 @@ class Ui_janela(object):
                                                 self.checkBoxLetrasAcentuadas, self.checkBoxNumeros, 
                                                 self.checkBoxSimbolos, self.checkBoxEspaco)
             
-            iniciar                         = funcoes.iniciar(self.abrir, self.pushButtonIniciar, self.progressBarProgressoGeral, 
-                                                self.tabWidget, self.textEditConsole, LimiteMinimo, LimiteMaximo, 
-                                                caracteres)
+            iniciar                         = iniciarPrograma.iniciar(self.abrir, self.pushButtonIniciar, 
+                                                self.progressBarProgressoGeral, self.tabWidget, LimiteMinimo,
+                                                LimiteMaximo, caracteres)
 
             iniciar.sinal.connect(sinalIniciar)
             self.threads.append(iniciar)
@@ -467,7 +474,7 @@ class Ui_janela(object):
 
         #Menu principal
         self.pushButtonIniciar.clicked.connect(iniciar)
-        self.pushButtonPararForcaBruta.clicked.connect(pararForcaBruta)
+        self.pushButtonParar.clicked.connect(pararForcaBruta)
         
         #Menu arquivo
         self.actionAbrir.triggered.connect(abrir)
@@ -526,9 +533,7 @@ class Ui_janela(object):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\';\"><br /></p></body></html>"))
         self.groupBox_4.setTitle(_translate("janela", "Informações do arquivo"))
         self.label_8.setText(_translate("janela", "Tamanho:"))
-        self.labelTamanho.setText(_translate("janela", "xxx"))
         self.label_11.setText(_translate("janela", "Nome:"))
-        self.labelNome.setText(_translate("janela", "xxxxxxxxx"))
         self.menuArquivo.setTitle(_translate("janela", "Arquivo"))
         self.menuSobre.setTitle(_translate("janela", "Info"))
         self.menuIdioma.setTitle(_translate("janela", "Idioma"))
@@ -536,7 +541,7 @@ class Ui_janela(object):
         self.actionSalvar.setText(_translate("janela", "Salvar"))
         self.actionAjuda.setText(_translate("janela", "Ajuda"))
         self.actionSobre.setText(_translate("janela", "Sobre"))
-        self.actionFechar.setText(_translate("janela", "SairDoPrograma"))
+        self.actionFechar.setText(_translate("janela", "Sair"))
         self.actionThreads.setText(_translate("janela", "Threads"))
         self.actionPortugues.setText(_translate("janela", "Português"))
         self.actionIngles.setText(_translate("janela", "Inglês"))

@@ -936,7 +936,7 @@ p, li { white-space: pre-wrap; }
       </rect>
      </property>
      <property name="text">
-      <string>xxx</string>
+      <string/>
      </property>
     </widget>
     <widget class="QLabel" name="label_11">
@@ -962,7 +962,7 @@ p, li { white-space: pre-wrap; }
       </rect>
      </property>
      <property name="text">
-      <string>xxxxxxxxx</string>
+      <string/>
      </property>
     </widget>
    </widget>
