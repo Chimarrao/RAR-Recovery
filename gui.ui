@@ -154,7 +154,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <property name="iconSize">
      <size>
@@ -790,6 +790,9 @@
        <string>Gerenciamento de Threads</string>
       </property>
       <widget class="QRadioButton" name="radioButton_4">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>10</x>

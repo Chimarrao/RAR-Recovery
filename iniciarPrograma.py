@@ -2,7 +2,6 @@ import time
 import cracker
 import rarfile
 import zipfile
-import geradorSenhas
 from PyQt5 import QtCore
 
 class iniciar(QtCore.QThread):
@@ -20,60 +19,44 @@ class iniciar(QtCore.QThread):
         self.caracteres                     = caracteres
 
     def run(self):
-        if self.abrir.formatoArquivo != "zip" and self.abrir.formatoArquivo != "rar" or self.LimiteMinimo > self.LimiteMaximo:
-            if self.LimiteMinimo > self.LimiteMaximo:
-                self.sinal.emit("msgerro", "Limite mínimo não pode ser maior que o limite máximo")
-            else:
-                self.sinal.emit("msgerro", "Arquivo inválido")
-        else:
-            try:
-                tentativas                  = 0
-                combPossiveis               = 0
-                listaSenhas                 = []
-                senhaEncontrada             = False
-                tempoInicio                 = time.time()
-                numCaracteres               = len(self.caracteres)
+        #Verificações
+        if self.LimiteMinimo > self.LimiteMaximo:
+            self.sinal.emit("msgerro", "Limite mínimo não pode ser maior que o limite máximo")
+            return
+        
+        if self.abrir.formatoArquivo != "zip" and self.abrir.formatoArquivo != "rar":
+            self.sinal.emit("msgerro", "Arquivo inválido")
+            return
 
-                for tamanho in range(self.LimiteMinimo, self.LimiteMaximo+1):
-                    combPossiveis = combPossiveis + (numCaracteres ** tamanho)
-            
-                parte = combPossiveis/100
-                
-                self.sinal.emit("bloquear", "0")
-                
-                if self.abrir.formatoArquivo == "zip":
-                    arquivoZip = zipfile.ZipFile(self.abrir.caminhoArquivo, "r")
-                
-                if self.abrir.formatoArquivo == "rar":
-                    arquivoRar = rarfile.RarFile(self.abrir.caminhoArquivo, "r")
+        if len(self.caracteres) == 0:
+            self.sinal.emit("msgerro", "Nenhum grupo de caracteres selecionado")
+            return
 
-                for i in range(self.LimiteMinimo, self.LimiteMaximo+1):
-                    listaSenhas = geradorSenhas.gerador(listaSenhas, self.caracteres, i)               
-                    for listaSenhas in listaSenhas:
-                        tentativas          += 1
-                        fim                 = len(listaSenhas)
-                        
-                        if self.abrir.formatoArquivo == "zip":
-                            senhaEncontrada = cracker.cracker(arquivoZip, self.abrir.formatoArquivo, listaSenhas, 
-                                                                  i, tentativas, self.sinal, tempoInicio, parte)
-                        
-                        if self.abrir.formatoArquivo == "rar":
-                            senhaEncontrada = cracker.cracker(arquivoRar, self.abrir.formatoArquivo, listaSenhas, 
-                                                                  i, tentativas, self.sinal, tempoInicio, parte)
+        try:
+            self.sinal.emit("bloquear", "0")
+
+            #Criação do arquivo e envio para o cracker
+            if self.abrir.formatoArquivo == "zip":
+                arquivoZip = zipfile.ZipFile(self.abrir.caminhoArquivo, "r")
+                senhaEncontrada = cracker.cracker(arquivoZip, self.LimiteMinimo, self.LimiteMaximo, self.caracteres,
+                                                  self.sinal, self.abrir.formatoArquivo)
+                
+            if self.abrir.formatoArquivo == "rar":
+                arquivoRar = rarfile.RarFile(self.abrir.caminhoArquivo, "r")
+                senhaEncontrada = cracker.cracker(arquivoRar, self.LimiteMinimo, self.LimiteMaximo, self.caracteres,
+                                                  self.sinal, self.abrir.formatoArquivo)
                                             
-                        i = fim
-
-                        if senhaEncontrada:
-                            self.sinal.emit("liberar", "0")
-                            return
-                    
-                if not senhaEncontrada:
-                    self.sinal.emit("msginformacao", "A senha não foi encontrada, tente outra configuração")
-                    self.sinal.emit("liberar", "0")
-            
-            except Exception as e:
-                self.sinal.emit("msgerro", str(e))
+            #Tratamento de resultados
+            if senhaEncontrada:
                 self.sinal.emit("liberar", "0")
+                return
+            else:
+                self.sinal.emit("msgatencao", "A senha não foi encontrada, tente outra configuração")
+                self.sinal.emit("liberar", "0")
+            
+        except Exception as e:
+            self.sinal.emit("msgerro", str(e))
+            self.sinal.emit("liberar", "0")
 
     def stop(self):
         self.terminate()

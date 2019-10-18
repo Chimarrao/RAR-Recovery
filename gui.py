@@ -367,22 +367,23 @@ class Ui_janela(object):
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(janela)
     #----------------------------------------------Código adicionado manualmente-----------------------------------------------#
+    #Imports    
         import run
         import packs
         import abrirArquivo
         import iniciarPrograma
         from functools import partial
         from PyQt5.QtWidgets import QMessageBox
-
-        #Threads
+    #--------------------------------------------------------------------------------------------------------------------------#
+    #Threads
         self.threads = []
         self.abrir = abrirArquivo.abrir(self.labelNome, self.labelTamanho)
-
-        #Desabilita tabs
+    #--------------------------------------------------------------------------------------------------------------------------#
+    #Desabilita tabs
         self.tab_3.setEnabled(False)
         self.tab_2.setEnabled(False)
-
-        #Recebimento de sinal do iniciar
+    #--------------------------------------------------------------------------------------------------------------------------#
+    #Recebimento de sinal do iniciar
         def sinalIniciar(comando, valor):
             if comando == "apagar":
                 self.textEditConsole.clear()
@@ -417,12 +418,17 @@ class Ui_janela(object):
                 msgBox.exec_()
                 
             if comando == "msgatencao":
-                pass
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setWindowTitle("Atenção !")
+                msgBox.setText(valor)
+                msgBox.setWindowIcon(QtGui.QIcon("./icones/Sistema operacional/atencao-96.png"))
+                msgBox.exec_()
 
             if comando == "console":
                 self.textEditConsole.insertPlainText(valor)
-
-        #Funções para botões
+    #--------------------------------------------------------------------------------------------------------------------------#
+    #Botão Iniciar
         def iniciar():
             caracteres                      = []
             LimiteMinimo                    = self.spinBoxLimiteMinimo.value()
@@ -441,17 +447,31 @@ class Ui_janela(object):
             self.threads.append(iniciar)
             iniciar.start()
         
-        #Percorre todas as threads e para elas
-        def pararForcaBruta():
+        self.pushButtonIniciar.clicked.connect(iniciar)
+    #--------------------------------------------------------------------------------------------------------------------------#        
+    #Botão Parar
+        def pararCracker():
             if len(self.threads) > 0:
                 for thread in self.threads:
                     thread.stop()
                 self.threads.clear()
                 sinalIniciar("liberar", 0)
-
+        
+        self.pushButtonParar.clicked.connect(pararCracker)
+    #--------------------------------------------------------------------------------------------------------------------------#        
+    #Arquivo -> Abrir
+        def abrir():
+            self.abrir.run()
+        
+        self.actionAbrir.triggered.connect(abrir)
+    #--------------------------------------------------------------------------------------------------------------------------#        
+    #Arquivo -> Sair
         def sairDoPrograma():
             janela.close()
-
+        
+        self.actionFechar.triggered.connect(sairDoPrograma)
+    #--------------------------------------------------------------------------------------------------------------------------#
+    #Checkbox Todos os caracteres
         def todosCaracteres():
             if self.checkBoxTodos.isChecked():
                 self.checkBoxLetrasMaiusculas.setEnabled(False)
@@ -468,21 +488,7 @@ class Ui_janela(object):
                 self.checkBoxNumeros.setEnabled(True)
                 self.checkBoxSimbolos.setEnabled(True)
                 self.checkBoxEspaco.setEnabled(True)
-
-        def abrir():
-            self.abrir.run()
-
-        #Menu principal
-        self.pushButtonIniciar.clicked.connect(iniciar)
-        self.pushButtonParar.clicked.connect(pararForcaBruta)
         
-        #Menu arquivo
-        self.actionAbrir.triggered.connect(abrir)
-        
-        #Barra de menu
-        self.actionFechar.triggered.connect(sairDoPrograma)
-
-        #Outras funções
         self.checkBoxTodos.clicked.connect(todosCaracteres)
     #--------------------------------------------------------------------------------------------------------------------------#
     def retranslateUi(self, janela):

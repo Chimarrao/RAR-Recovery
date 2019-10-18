@@ -10,15 +10,16 @@ class abrir():
     
     def run(self):
         try:
+            #Abre o arquivo
             self.caminhoArquivo             = easygui.fileopenbox(default="*.rar", filetypes=["*.zip", "*.rar"])
             self.formatoArquivo             = self.caminhoArquivo.split(".")[-1]
         
-            #Coloca o nome na tela
+            #Seta o nome na tela
             nome                            = self.caminhoArquivo.split("\\")
             nome                            = nome[len(nome)-1]
             self.labelNome.setText(nome)
 
-            #Coloca o tamanho do label
+            #Seta o tamanho do arquivo no label
             tamanhoArquivo = os.path.getsize(self.caminhoArquivo)
             #Em bytes
             if tamanhoArquivo < 1024:
