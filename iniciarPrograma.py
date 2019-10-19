@@ -8,7 +8,7 @@ class iniciar(QtCore.QThread):
     sinal = QtCore.pyqtSignal(object, str)
 
     def __init__(self, abrir, pushButtonIniciar, progressBarProgressoGeral, tabWidget, LimiteMinimo, 
-                 LimiteMaximo, caracteres):
+                 LimiteMaximo, caracteres, numeroThreads):
         QtCore.QThread.__init__(self)
         self.abrir                          = abrir
         self.pushButtonIniciar              = pushButtonIniciar
@@ -17,6 +17,7 @@ class iniciar(QtCore.QThread):
         self.LimiteMinimo                   = LimiteMinimo
         self.LimiteMaximo                   = LimiteMaximo
         self.caracteres                     = caracteres
+        self.numeroThreads                  = numeroThreads
 
     def run(self):
         #Verificações
@@ -38,13 +39,13 @@ class iniciar(QtCore.QThread):
             #Criação do arquivo e envio para o cracker
             if self.abrir.formatoArquivo == "zip":
                 arquivoZip = zipfile.ZipFile(self.abrir.caminhoArquivo, "r")
-                senhaEncontrada = cracker.cracker(arquivoZip, self.LimiteMinimo, self.LimiteMaximo, self.caracteres,
-                                                  self.sinal, self.abrir.formatoArquivo)
+                senhaEncontrada = cracker.iniciar(arquivoZip, self.LimiteMinimo, self.LimiteMaximo, self.caracteres,
+                                                  self.sinal, self.abrir.formatoArquivo, self.numeroThreads)
                 
             if self.abrir.formatoArquivo == "rar":
                 arquivoRar = rarfile.RarFile(self.abrir.caminhoArquivo, "r")
-                senhaEncontrada = cracker.cracker(arquivoRar, self.LimiteMinimo, self.LimiteMaximo, self.caracteres,
-                                                  self.sinal, self.abrir.formatoArquivo)
+                senhaEncontrada = cracker.iniciar(arquivoRar, self.LimiteMinimo, self.LimiteMaximo, self.caracteres,
+                                                  self.sinal, self.abrir.formatoArquivo, self.numeroThreads)
                                             
             #Tratamento de resultados
             if senhaEncontrada:

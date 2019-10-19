@@ -154,7 +154,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <property name="iconSize">
      <size>
@@ -187,7 +187,7 @@
        <rect>
         <x>200</x>
         <y>0</y>
-        <width>289</width>
+        <width>291</width>
         <height>81</height>
        </rect>
       </property>
@@ -292,7 +292,7 @@
        <rect>
         <x>200</x>
         <y>80</y>
-        <width>289</width>
+        <width>291</width>
         <height>89</height>
        </rect>
       </property>
@@ -551,7 +551,7 @@
        <rect>
         <x>105</x>
         <y>0</y>
-        <width>384</width>
+        <width>386</width>
         <height>81</height>
        </rect>
       </property>
@@ -589,7 +589,7 @@
         <rect>
          <x>120</x>
          <y>20</y>
-         <width>91</width>
+         <width>41</width>
          <height>21</height>
         </rect>
        </property>
@@ -599,7 +599,7 @@
         <rect>
          <x>120</x>
          <y>50</y>
-         <width>91</width>
+         <width>41</width>
          <height>20</height>
         </rect>
        </property>
@@ -607,7 +607,7 @@
       <widget class="QPushButton" name="pushButton_8">
        <property name="geometry">
         <rect>
-         <x>220</x>
+         <x>230</x>
          <y>20</y>
          <width>21</width>
          <height>21</height>
@@ -630,7 +630,7 @@
       <widget class="QPushButton" name="pushButton_9">
        <property name="geometry">
         <rect>
-         <x>220</x>
+         <x>230</x>
          <y>50</y>
          <width>21</width>
          <height>21</height>
@@ -650,13 +650,39 @@
         </size>
        </property>
       </widget>
+      <widget class="QLabel" name="label_25">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>21</y>
+         <width>51</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>xxxx</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_27">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>50</y>
+         <width>51</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>xxxx</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QGroupBox" name="groupBox_7">
       <property name="geometry">
        <rect>
         <x>105</x>
         <y>80</y>
-        <width>384</width>
+        <width>386</width>
         <height>89</height>
        </rect>
       </property>
@@ -775,60 +801,300 @@
        <normaloff>icones/Sistema operacional/processador-96.png</normaloff>icones/Sistema operacional/processador-96.png</iconset>
      </attribute>
      <attribute name="title">
-      <string>CPU</string>
+      <string>Sistema</string>
      </attribute>
      <widget class="QGroupBox" name="groupBox_9">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>5</x>
         <y>0</y>
-        <width>481</width>
-        <height>171</height>
+        <width>240</width>
+        <height>71</height>
        </rect>
       </property>
       <property name="title">
        <string>Gerenciamento de Threads</string>
       </property>
-      <widget class="QRadioButton" name="radioButton_4">
-       <property name="enabled">
-        <bool>false</bool>
+      <widget class="QSlider" name="sliderThreads">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>210</width>
+         <height>22</height>
+        </rect>
        </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>10</number>
+       </property>
+       <property name="value">
+        <number>2</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelContThreads">
+       <property name="geometry">
+        <rect>
+         <x>225</x>
+         <y>40</y>
+         <width>16</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>2</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_7">
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>20</y>
-         <width>82</width>
-         <height>21</height>
+         <width>101</width>
+         <height>16</height>
         </rect>
        </property>
        <property name="text">
-        <string>Automático</string>
+        <string>Número de Threads:</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="radioButton_5">
+     </widget>
+     <widget class="QGroupBox" name="groupBox_10">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>0</y>
+        <width>241</width>
+        <height>169</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Auto-salvamento</string>
+      </property>
+      <widget class="QCheckBox" name="checkBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>181</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Salvar o projeto automaticamente</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="spinBox">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>47</y>
+         <width>71</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_9">
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>50</y>
-         <width>82</width>
-         <height>21</height>
+         <width>91</width>
+         <height>16</height>
         </rect>
        </property>
        <property name="text">
-        <string>Manual</string>
+        <string>Salvar a cada</string>
        </property>
       </widget>
-      <widget class="QSlider" name="horizontalSlider">
+      <widget class="QLabel" name="label_10">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>50</y>
+         <width>41</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>minutos</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_24">
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>80</y>
-         <width>421</width>
-         <height>22</height>
+         <width>91</width>
+         <height>16</height>
         </rect>
        </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="text">
+        <string>Nome do arquivo</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_3">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>78</y>
+         <width>71</width>
+         <height>20</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_28">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>80</y>
+         <width>41</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>.rrp</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_29">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>110</y>
+         <width>91</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Diretório:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_31">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>140</y>
+         <width>221</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>C:/xxx/xxxx/xxxx/arquivo.rrp</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_10">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>110</y>
+         <width>71</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Abrir</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>icones/Pastas/abrir-pasta-96.png</normaloff>icones/Pastas/abrir-pasta-96.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_11">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>69</y>
+        <width>240</width>
+        <height>100</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Extração:</string>
+      </property>
+      <widget class="QCheckBox" name="checkBox_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>131</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Extrair o(s) arquivo(s)</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_33">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>75</y>
+         <width>221</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>C:/xxx/xxxx/xxxx/</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_11">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>47</y>
+         <width>71</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Abrir</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>icones/Pastas/abrir-pasta-96.png</normaloff>icones/Pastas/abrir-pasta-96.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_32">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>47</y>
+         <width>91</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Diretório:</string>
        </property>
       </widget>
      </widget>
@@ -991,9 +1257,9 @@ p, li { white-space: pre-wrap; }
      <string>Arquivo</string>
     </property>
     <addaction name="actionAbrir"/>
-    <addaction name="actionSalvar"/>
     <addaction name="separator"/>
     <addaction name="actionAbrirProjeto"/>
+    <addaction name="actionSalvar"/>
     <addaction name="separator"/>
     <addaction name="actionFechar"/>
    </widget>
@@ -1033,7 +1299,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>icones/Sistema operacional/salvar-96.png</normaloff>icones/Sistema operacional/salvar-96.png</iconset>
    </property>
    <property name="text">
-    <string>Salvar</string>
+    <string>Salvar projeto</string>
    </property>
   </action>
   <action name="actionAjuda">
@@ -1117,5 +1383,214 @@ p, li { white-space: pre-wrap; }
  </widget>
  <layoutdefault spacing="0" margin="0"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>sliderThreads</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>labelContThreads</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>207</x>
+     <y>188</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>257</x>
+     <y>186</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>pushButton_11</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>107</x>
+     <y>239</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>188</x>
+     <y>259</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_32</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>57</x>
+     <y>233</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>52</x>
+     <y>267</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_33</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>80</x>
+     <y>234</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>116</x>
+     <y>293</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>spinBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>382</x>
+     <y>171</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>431</x>
+     <y>203</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_31</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>365</x>
+     <y>164</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>492</x>
+     <y>291</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>pushButton_10</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>373</x>
+     <y>165</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>402</x>
+     <y>263</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>lineEdit_3</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>358</x>
+     <y>168</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>413</x>
+     <y>226</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_29</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>321</x>
+     <y>168</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>289</x>
+     <y>253</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_24</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>321</x>
+     <y>228</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_9</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>343</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>330</x>
+     <y>197</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_28</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>388</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>474</x>
+     <y>226</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_10</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>308</x>
+     <y>166</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>458</x>
+     <y>198</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
