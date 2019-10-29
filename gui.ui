@@ -108,7 +108,7 @@
    </widget>
    <widget class="QPushButton" name="pushButtonPausar">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -803,7 +803,7 @@
      <attribute name="title">
       <string>Sistema</string>
      </attribute>
-     <widget class="QGroupBox" name="groupBox_9">
+     <widget class="QGroupBox" name="groupBoxThreads">
       <property name="geometry">
        <rect>
         <x>5</x>
@@ -1589,6 +1589,102 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>458</x>
      <y>198</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxTodos</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>checkBoxLetrasMaiusculas</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>94</x>
+     <y>290</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>128</x>
+     <y>171</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxTodos</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>checkBoxLetrasMinusculas</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>115</x>
+     <y>283</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>109</x>
+     <y>191</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxTodos</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>checkBoxLetrasAcentuadas</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>94</x>
+     <y>287</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>87</x>
+     <y>209</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxTodos</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>checkBoxNumeros</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>68</x>
+     <y>283</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>66</x>
+     <y>224</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxTodos</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>checkBoxSimbolos</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>51</x>
+     <y>287</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>48</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxTodos</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>checkBoxEspaco</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>173</x>
+     <y>285</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>164</x>
+     <y>272</y>
     </hint>
    </hints>
   </connection>

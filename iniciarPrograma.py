@@ -2,14 +2,16 @@ import time
 import cracker
 import rarfile
 import zipfile
+import threading
 from PyQt5 import QtCore
 
 class iniciar(QtCore.QThread):
     sinal = QtCore.pyqtSignal(object, str)
 
     def __init__(self, abrir, pushButtonIniciar, progressBarProgressoGeral, tabWidget, LimiteMinimo, 
-                 LimiteMaximo, caracteres, numeroThreads):
+                 LimiteMaximo, caracteres, numeroThreads, posiscaoUltSenha):
         QtCore.QThread.__init__(self)
+
         self.abrir                          = abrir
         self.pushButtonIniciar              = pushButtonIniciar
         self.progressBarProgressoGeral      = progressBarProgressoGeral
@@ -18,6 +20,7 @@ class iniciar(QtCore.QThread):
         self.LimiteMaximo                   = LimiteMaximo
         self.caracteres                     = caracteres
         self.numeroThreads                  = numeroThreads
+        self.posiscaoUltSenha               = posiscaoUltSenha
 
     def run(self):
         #Verificações
@@ -36,25 +39,29 @@ class iniciar(QtCore.QThread):
         try:
             self.sinal.emit("bloquear", "0")
 
-            #Criação do arquivo e envio para o cracker
+            #Criação do arquivo
             if self.abrir.formatoArquivo == "zip":
-                arquivoZip = zipfile.ZipFile(self.abrir.caminhoArquivo, "r")
-                senhaEncontrada = cracker.iniciar(arquivoZip, self.LimiteMinimo, self.LimiteMaximo, self.caracteres,
-                                                  self.sinal, self.abrir.formatoArquivo, self.numeroThreads)
+                arquivoZip                  = zipfile.ZipFile(self.abrir.caminhoArquivo, "r")
+                senha                       = cracker.cracker(arquivoZip, self.LimiteMinimo, self.LimiteMaximo, 
+                                                              self.caracteres, self.sinal, self.abrir.formatoArquivo,
+                                                              self.numeroThreads, self.posiscaoUltSenha)
+                senha.run()
                 
             if self.abrir.formatoArquivo == "rar":
-                arquivoRar = rarfile.RarFile(self.abrir.caminhoArquivo, "r")
-                senhaEncontrada = cracker.iniciar(arquivoRar, self.LimiteMinimo, self.LimiteMaximo, self.caracteres,
-                                                  self.sinal, self.abrir.formatoArquivo, self.numeroThreads)
+                arquivoRar                  = rarfile.RarFile(self.abrir.caminhoArquivo, "r")
+                senha                       = cracker.cracker(arquivoRar, self.LimiteMinimo, self.LimiteMaximo,
+                                                              self.caracteres, self.sinal, self.abrir.formatoArquivo,
+                                                              self.numeroThreads, self.posiscaoUltSenha)
+                senha.run()
                                             
             #Tratamento de resultados
-            if senhaEncontrada:
+            if senha:
                 self.sinal.emit("liberar", "0")
                 return
             else:
                 self.sinal.emit("msgatencao", "A senha não foi encontrada, tente outra configuração")
                 self.sinal.emit("liberar", "0")
-            
+
         except Exception as e:
             self.sinal.emit("msgerro", str(e))
             self.sinal.emit("liberar", "0")

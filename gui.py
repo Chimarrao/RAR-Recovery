@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.1
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -52,7 +52,7 @@ class Ui_janela(object):
         self.pushButtonParar.setFlat(True)
         self.pushButtonParar.setObjectName("pushButtonParar")
         self.pushButtonPausar = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButtonPausar.setEnabled(False)
+        self.pushButtonPausar.setEnabled(True)
         self.pushButtonPausar.setGeometry(QtCore.QRect(80, 10, 61, 61))
         font = QtGui.QFont()
         font.setBold(False)
@@ -239,20 +239,20 @@ class Ui_janela(object):
         self.tabWidget.addTab(self.tab_2, icon8, "")
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tab_3")
-        self.groupBox_9 = QtWidgets.QGroupBox(self.tab_3)
-        self.groupBox_9.setGeometry(QtCore.QRect(5, 0, 240, 71))
-        self.groupBox_9.setObjectName("groupBox_9")
-        self.sliderThreads = QtWidgets.QSlider(self.groupBox_9)
+        self.groupBoxThreads = QtWidgets.QGroupBox(self.tab_3)
+        self.groupBoxThreads.setGeometry(QtCore.QRect(5, 0, 240, 71))
+        self.groupBoxThreads.setObjectName("groupBoxThreads")
+        self.sliderThreads = QtWidgets.QSlider(self.groupBoxThreads)
         self.sliderThreads.setGeometry(QtCore.QRect(10, 40, 210, 22))
         self.sliderThreads.setMinimum(1)
         self.sliderThreads.setMaximum(10)
         self.sliderThreads.setProperty("value", 2)
         self.sliderThreads.setOrientation(QtCore.Qt.Horizontal)
         self.sliderThreads.setObjectName("sliderThreads")
-        self.labelContThreads = QtWidgets.QLabel(self.groupBox_9)
+        self.labelContThreads = QtWidgets.QLabel(self.groupBoxThreads)
         self.labelContThreads.setGeometry(QtCore.QRect(225, 40, 16, 16))
         self.labelContThreads.setObjectName("labelContThreads")
-        self.label_7 = QtWidgets.QLabel(self.groupBox_9)
+        self.label_7 = QtWidgets.QLabel(self.groupBoxThreads)
         self.label_7.setGeometry(QtCore.QRect(10, 20, 101, 16))
         self.label_7.setObjectName("label_7")
         self.groupBox_10 = QtWidgets.QGroupBox(self.tab_3)
@@ -443,6 +443,12 @@ class Ui_janela(object):
         self.checkBox.clicked['bool'].connect(self.label_9.setEnabled)
         self.checkBox.clicked['bool'].connect(self.label_28.setEnabled)
         self.checkBox.clicked['bool'].connect(self.label_10.setEnabled)
+        self.checkBoxTodos.clicked['bool'].connect(self.checkBoxLetrasMaiusculas.setDisabled)
+        self.checkBoxTodos.clicked['bool'].connect(self.checkBoxLetrasMinusculas.setDisabled)
+        self.checkBoxTodos.clicked['bool'].connect(self.checkBoxLetrasAcentuadas.setDisabled)
+        self.checkBoxTodos.clicked['bool'].connect(self.checkBoxNumeros.setDisabled)
+        self.checkBoxTodos.clicked['bool'].connect(self.checkBoxSimbolos.setDisabled)
+        self.checkBoxTodos.clicked['bool'].connect(self.checkBoxEspaco.setDisabled)
         QtCore.QMetaObject.connectSlotsByName(janela)
     #----------------------------------------------Código adicionado manualmente-----------------------------------------------#
     #Imports    
@@ -453,8 +459,9 @@ class Ui_janela(object):
         from functools import partial
         from PyQt5.QtWidgets import QMessageBox
     #--------------------------------------------------------------------------------------------------------------------------#
-    #Threads
+    #Variáveis
         self.threads = []
+        self.posiscaoUltSenha = 0
         self.abrir = abrirArquivo.abrir(self.labelNome, self.labelTamanho)
     #--------------------------------------------------------------------------------------------------------------------------#
     #Desabilita tabs
@@ -467,6 +474,9 @@ class Ui_janela(object):
 
             if comando == "console":
                 self.textEditConsole.insertPlainText(valor)
+
+            if comando == "posiscaoUltSenha":
+                self.posiscaoUltSenha = int(valor)
 
             if comando == "atualizarBarra":
                 self.progressBarProgressoGeral.setValue(int(valor))
@@ -519,7 +529,7 @@ class Ui_janela(object):
             
             iniciar                         = iniciarPrograma.iniciar(self.abrir, self.pushButtonIniciar, 
                                                 self.progressBarProgressoGeral, self.tabWidget, LimiteMinimo,
-                                                LimiteMaximo, caracteres, numeroThreads)
+                                                LimiteMaximo, caracteres, numeroThreads, self.posiscaoUltSenha)
 
             iniciar.sinal.connect(sinalIniciar)
             self.threads.append(iniciar)
@@ -527,11 +537,21 @@ class Ui_janela(object):
         
         self.pushButtonIniciar.clicked.connect(iniciar)
     #--------------------------------------------------------------------------------------------------------------------------#        
+    #Botão Pausar
+        def pausarCracker():
+            if len(self.threads) > 0:
+                for thread in self.threads:
+                    thread.stop()
+                self.pushButtonIniciar.setEnabled(True)
+
+        self.pushButtonPausar.clicked.connect(pausarCracker)   
+    #--------------------------------------------------------------------------------------------------------------------------#        
     #Botão Parar
         def pararCracker():
             if len(self.threads) > 0:
                 for thread in self.threads:
                     thread.stop()
+                self.posiscaoUltSenha = 0
                 self.threads.clear()
                 sinalIniciar("liberar", 0)
         
@@ -548,26 +568,6 @@ class Ui_janela(object):
             janela.close()
         
         self.actionFechar.triggered.connect(sairDoPrograma)
-    #--------------------------------------------------------------------------------------------------------------------------#
-    #Checkbox Todos os caracteres
-        def todosCaracteres():
-            if self.checkBoxTodos.isChecked():
-                self.checkBoxLetrasMaiusculas.setEnabled(False)
-                self.checkBoxLetrasMinusculas.setEnabled(False)
-                self.checkBoxLetrasAcentuadas.setEnabled(False)
-                self.checkBoxNumeros.setEnabled(False)
-                self.checkBoxSimbolos.setEnabled(False)
-                self.checkBoxEspaco.setEnabled(False)
-
-            if not self.checkBoxTodos.isChecked():
-                self.checkBoxLetrasMaiusculas.setEnabled(True)
-                self.checkBoxLetrasMinusculas.setEnabled(True)
-                self.checkBoxLetrasAcentuadas.setEnabled(True)
-                self.checkBoxNumeros.setEnabled(True)
-                self.checkBoxSimbolos.setEnabled(True)
-                self.checkBoxEspaco.setEnabled(True)
-        
-        self.checkBoxTodos.clicked.connect(todosCaracteres)
     #--------------------------------------------------------------------------------------------------------------------------#
     def retranslateUi(self, janela):
         _translate = QtCore.QCoreApplication.translate
@@ -606,7 +606,7 @@ class Ui_janela(object):
         self.label_23.setText(_translate("janela", "xxxxxxxxx"))
         self.label_26.setText(_translate("janela", "Número de linhas:"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("janela", "Dicionário"))
-        self.groupBox_9.setTitle(_translate("janela", "Gerenciamento de Threads"))
+        self.groupBoxThreads.setTitle(_translate("janela", "Gerenciamento de Threads"))
         self.labelContThreads.setText(_translate("janela", "2"))
         self.label_7.setText(_translate("janela", "Número de Threads:"))
         self.groupBox_10.setTitle(_translate("janela", "Auto-salvamento"))
